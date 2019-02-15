@@ -7,12 +7,12 @@
     }
     
     $username = $_SERVER['USER'];
-    $ip = $_SERVER['SERVER_ADDR'];
+    $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
 
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
 
-    $autoAuthId = md5( $username . $_SERVER['SERVER_ADDR'] . $_SERVER['REMOTE_ADDR'] . $_SERVER['REMOTE_PORT'] . $_SERVER['cp_security_token'] );
+    $autoAuthId = md5( $username . $_SERVER['SERVER_ADDR'] . $_SERVER['SERVER_NAME'] . $_SERVER['REMOTE_PORT'] . $_SERVER['cp_security_token'] );
     $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
 
     mkdir( dirname( $autoAuthFile ), 0777, true );

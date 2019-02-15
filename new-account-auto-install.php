@@ -69,14 +69,35 @@ function add() {
             $remoteSite = $remoteSite3;
         }
     }
-    
-    $header = 'From: info@pagecarton.com' . "\r\n";
-    $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
-    mail( 'info@pagecarton.com', 'New PageCarton Installed on cPanel', var_export( $input, true ), $header );
-
+    $ip = gethostname();
     $username = $input['data']['user'];
-
+    $homeUrl = 'http://' . $ip . '/~' . $username;
+    $buildSiteLink = '/widgets/PageCarton_NewSiteWizard';
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
+    $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
+    $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
+    $emailMessage = 
+    'Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
+
+    Start building your site now: ' . $homeUrl .  $buildSiteLink . '
+
+    Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
+
+    
+    Learn about what you can do with PageCarton
+
+    Documentation: https://docs.pagecarton.org
+    Support Forum: https://www.pagecarton.org/forum
+
+    Start building your site now: ' . $homeUrl .  $buildSiteLink . '
+   
+    Regards,
+
+    PageCarton.org Team
+
+    ';
+    mail( $input['data']['contactemail'], 'Your new PageCarton Website', $emailMessage, $header );
+
 
     if( $f = fetchLink( $remoteSite . '/pc_installer.php?do_not_highlight_file=1' ) )
     {
@@ -87,13 +108,11 @@ function add() {
         chmod( $installer, 0644 );
         chown( $installer, $username );
         chgrp( $installer, $username );
-        $ip = gethostname();
-        $homeUrl = 'http://' . $ip . '/~' . $username;
         $url = $homeUrl . '/pc_installer.php?stage=download';
         $response = fetchLink( $url );
-        file_put_contents( $myInstallerFile . '-url.txt', var_export( $url, true ) );
-        file_put_contents( $myInstallerFile . '-response.txt', var_export( $response, true ) );
-        file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
+    //    file_put_contents( $myInstallerFile . '-url.txt', var_export( $url, true ) );
+    //    file_put_contents( $myInstallerFile . '-response.txt', var_export( $response, true ) );
+    //    file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
     //file_put_contents( 'pc_installer.php',  );
     }

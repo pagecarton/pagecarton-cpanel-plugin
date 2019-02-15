@@ -4,7 +4,7 @@
 
     
     $username = $_SERVER['USER'];
-    $ip = $_SERVER['SERVER_ADDR'];
+    $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
 
     header( 'Location: ' . $homeUrl . '/pc-admin?auto_auth=' . PC_AUTO_AUTH_TOKEN );
