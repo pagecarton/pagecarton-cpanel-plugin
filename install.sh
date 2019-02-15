@@ -1,4 +1,4 @@
-
+#!/bin/bash
 THEMENAME="paper_lantern"
 if [ "$1" ]
 then
