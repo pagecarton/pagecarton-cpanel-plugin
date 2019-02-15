@@ -1,0 +1,12 @@
+[
+    {
+        "name":"PageCarton",
+        "featuremanager":true,
+        "uri":"index.html",
+        "icon":"pagecarton.png",
+        "type":"link",
+        "order":"1",
+        "id":"pagecarton",
+        "group_id":"software"
+    }
+]
