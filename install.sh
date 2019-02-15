@@ -5,7 +5,7 @@ then
 THEMENAME="$1"
 fi
 
-FRONTEND_BASE="/usr/local/cpanel/base/frontend/$THEMENAME/pagecarton/"
+FRONTEND_BASE="/usr/local/cpanel/base/frontend/$THEMENAME/pagecarton"
 PAGECARTON_BASE="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin"
 
 #   remove previous
