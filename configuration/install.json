@@ -2,7 +2,7 @@
     {
         "name":"PageCarton",
         "featuremanager":true,
-        "uri":"index.html",
+        "uri":"pagecarton/index.php",
         "icon":"pagecarton.png",
         "type":"link",
         "order":"1",

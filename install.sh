@@ -1,6 +1,6 @@
 
 THEMENAME="paper_lantern"
-if [ ! "$1" ]
+if [ "$1" ]
 then
 THEMENAME="$1"
 fi
