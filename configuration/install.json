@@ -1,12 +1,41 @@
 [
     {
-        "name":"PageCarton",
-        "featuremanager":true,
+        "order":"1",
+        "type":"group",
+        "id":"pagecarton",
+        "name":"PageCarton"
+    },
+    {
+        "order":"1",
         "uri":"pagecarton/index.php",
         "icon":"pagecarton.png",
+        "group_id":"software",
         "type":"link",
+        "featuremanager":true,
+        "target":"_blank",
+        "name":"PageCarton",
+        "id":"pagecarton"
+    },
+    {
         "order":"1",
-        "id":"pagecarton",
-        "group_id":"software"
+        "uri":"pagecarton/create.php",
+        "icon":"pagecarton-creator.png",
+        "group_id":"pagecarton",
+        "type":"link",
+        "featuremanager":true,
+        "target":"_blank",
+        "name":"Create a Website",
+        "id":"pagecarton-creator"
+    },
+    {
+        "order":"2",
+        "type":"link",
+        "group_id":"pagecarton",
+        "uri":"pagecarton/manage.php",
+        "icon":"pagecarton-sites.png",
+        "target":"_blank",
+        "featuremanager":true,
+        "name":"Manage My Sites",
+        "id":"pagecarton-sites"
     }
 ]

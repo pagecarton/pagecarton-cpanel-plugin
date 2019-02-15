@@ -11,6 +11,7 @@ FRONTENDBASE="/usr/local/cpanel/base/frontend/$THEMENAME/pagecarton/"
 rm -rf pagecarton-cpanel-plugin
 rm -rf "$FRONTENDBASE"
 
+mkdir -p "$FRONTENDBASE"
 
 #   download plugin
 git clone https://github.com/pagecarton/pagecarton-cpanel-plugin.git

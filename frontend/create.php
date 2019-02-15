@@ -7,7 +7,7 @@
     $ip = $_SERVER['SERVER_ADDR'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
 
-    header( 'Location: ' . $homeUrl );
+    header( 'Location: ' . $homeUrl . '/new-site-wizard' );
     exit();
 
 ?>
