@@ -29,6 +29,17 @@
     },
     {
         "order":"2",
+        "uri":"pagecarton/plugin/post.php",
+        "icon":"pagecarton-post.png",
+        "group_id":"pagecarton",
+        "type":"link",
+        "featuremanager":true,
+        "target":"_blank",
+        "name":"Publish a Post",
+        "id":"pagecarton-post"
+    },
+    {
+        "order":"3",
         "type":"link",
         "group_id":"pagecarton",
         "uri":"pagecarton/plugin/manage.php",
