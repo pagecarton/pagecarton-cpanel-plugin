@@ -121,13 +121,9 @@ PageCarton.org Team
 
         mkdir( dirname( $autoAuthFile ), 0777, true );
         
-        chmod( dirname( $autoAuthFile ), 0644 );
+        chmod( dirname( $autoAuthFile ), 0777 );
         chown( dirname( $autoAuthFile ), $username );
         chgrp( dirname( $autoAuthFile ), $username );
-
-        chmod( $autoAuthFile, 0644 );
-        chown( $autoAuthFile, $username );
-        chgrp( $autoAuthFile, $username );
 
         $authInfo = array(
             'username' => $username,
@@ -136,6 +132,11 @@ PageCarton.org Team
             'access_level' => 99,
         );
         file_put_contents( $autoAuthFile, json_encode( $authInfo ) );
+
+        chmod( $autoAuthFile, 0777 );
+        chown( $autoAuthFile, $username );
+        chgrp( $autoAuthFile, $username );
+
         fetchLink( $homeUrl . '/?pc_auto_signup=1&pc_auto_auth=' . $autoAuthId );
         //file_put_contents( 'pc_installer.php',  );
     }
