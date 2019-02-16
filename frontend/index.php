@@ -8,7 +8,7 @@
     $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
 
-    header( 'Location: ' . $homeUrl . '?auto_auth=' . PC_AUTO_AUTH_TOKEN );
+    header( 'Location: ' . $homeUrl . '?pc_auto_auth=' . PC_AUTO_AUTH_TOKEN );
     exit();
 
 ?>

@@ -6,7 +6,7 @@
     $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
 
-    header( 'Location: ' . $homeUrl . '/widgets/PageCarton_NewSiteWizard?auto_auth=' . PC_AUTO_AUTH_TOKEN );
+    header( 'Location: ' . $homeUrl . '/widgets/PageCarton_NewSiteWizard?pc_auto_auth=' . PC_AUTO_AUTH_TOKEN );
     exit();
 
 ?>

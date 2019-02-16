@@ -111,7 +111,21 @@ PageCarton.org Team
     //    file_put_contents( $myInstallerFile . '-response.txt', var_export( $response, true ) );
     //    file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
-    //file_put_contents( 'pc_installer.php',  );
+
+        //  auto create admin account
+        $autoAuthId = md5( $username . time() . $input['data']['contactemail'] . $input['data']['pass'] . $input['data']['pass']  );
+        $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
+
+        mkdir( dirname( $autoAuthFile ), 0777, true );
+        $authInfo = array(
+            'username' => $username,
+            'password' => $input['data']['pass'],
+            'email' => @$input['data']['contactemail'] ? : ( $username . '@' . $ip ),
+            'access_level' => 99,
+        );
+        file_put_contents( $autoAuthFile, json_encode( $authInfo ) );
+        fetchLink( $homeUrl . '/?pc_auto_signup=1&pc_auto_auth=' . $autoAuthId );
+        //file_put_contents( 'pc_installer.php',  );
     }
 
     return array( 1, 'PageCarton Installed Successfully' );
