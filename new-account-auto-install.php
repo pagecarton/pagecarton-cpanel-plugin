@@ -77,23 +77,20 @@ function add() {
     $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
     $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
     $emailMessage = 
-    'Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
+'Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
 
-    Start building your site now: ' . $homeUrl .  $buildSiteLink . '
+Start building your site now: ' . $homeUrl .  $buildSiteLink . '
 
-    Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
+Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
 
-    
-    Learn about what you can do with PageCarton
+Learn about what you can do with PageCarton
+Documentation: https://docs.pagecarton.org
+Support Forum: https://www.pagecarton.org/forum
 
-    Documentation: https://docs.pagecarton.org
-    Support Forum: https://www.pagecarton.org/forum
+Start building your site now: ' . $homeUrl .  $buildSiteLink . '
 
-    Start building your site now: ' . $homeUrl .  $buildSiteLink . '
-   
-    Regards,
-
-    PageCarton.org Team
+Regards,
+PageCarton.org Team
 
     ';
     mail( $input['data']['contactemail'], 'Your new PageCarton Website', $emailMessage, $header );
