@@ -120,6 +120,15 @@ PageCarton.org Team
         $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
 
         mkdir( dirname( $autoAuthFile ), 0777, true );
+        
+        chmod( dirname( $autoAuthFile ), 0644 );
+        chown( dirname( $autoAuthFile ), $username );
+        chgrp( dirname( $autoAuthFile ), $username );
+
+        chmod( $autoAuthFile, 0644 );
+        chown( $autoAuthFile, $username );
+        chgrp( $autoAuthFile, $username );
+
         $authInfo = array(
             'username' => $username,
             'password' => $input['data']['pass'],
