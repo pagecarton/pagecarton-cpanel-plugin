@@ -83,6 +83,9 @@ Start building your site now: ' . $homeUrl .  $buildSiteLink . '
 
 Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
 
+Your login: ' . $input['data']['contactemail'] . '
+Password: ' . $input['data']['pass'] . '
+
 Learn about what you can do with PageCarton
 Documentation: https://docs.pagecarton.org
 Support Forum: https://www.pagecarton.org/forum
