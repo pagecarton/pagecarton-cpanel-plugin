@@ -74,29 +74,6 @@ function add() {
     $homeUrl = 'http://' . $ip . '/~' . $username;
     $buildSiteLink = '/widgets/PageCarton_NewSiteWizard';
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
-    $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
-    $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
-    $emailMessage = 
-'Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
-
-Start building your site now: ' . $homeUrl .  $buildSiteLink . '
-
-Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
-
-Your login: ' . $input['data']['contactemail'] . '
-Password: ' . $input['data']['pass'] . '
-
-Learn about what you can do with PageCarton
-Documentation: https://docs.pagecarton.org
-Support Forum: https://www.pagecarton.org/forum
-
-Start building your site now: ' . $homeUrl .  $buildSiteLink . '
-
-Regards,
-PageCarton.org Team
-
-    ';
-    mail( $input['data']['contactemail'], 'Your new PageCarton Website', $emailMessage, $header );
 
 
     if( $f = fetchLink( $remoteSite . '/pc_installer.php?do_not_highlight_file=1' ) )
@@ -139,6 +116,28 @@ PageCarton.org Team
 
         fetchLink( $homeUrl . '/?pc_auto_signup=1&pc_auto_auth=' . $autoAuthId );
         //file_put_contents( 'pc_installer.php',  );
+        $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
+    //    $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
+        $emailMessage = 
+'Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
+
+Start building your site now: ' . $homeUrl .  $buildSiteLink . '
+
+Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
+
+Your login: ' . $input['data']['contactemail'] . '
+Password: ' . $input['data']['pass'] . '
+
+Learn about what you can do with PageCarton
+Documentation: https://docs.pagecarton.org
+Support Forum: https://www.pagecarton.org/forum
+
+Start building your site now: ' . $homeUrl .  $buildSiteLink . '
+
+Regards,
+PageCarton.org Team
+';
+        mail( $input['data']['contactemail'], 'Your new PageCarton Website', $emailMessage, $header );
     }
 
     return array( 1, 'PageCarton Installed Successfully' );
