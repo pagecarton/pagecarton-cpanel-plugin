@@ -11,4 +11,4 @@ chmod 755 $INSTALL_FILENAME
 #   $INSTALL_FILENAME
 
 /usr/local/cpanel/bin/manage_hooks delete script $INSTALL_FILENAME
-/usr/local/cpanel/bin/manage_hooks add script $INSTALL_FILENAME
+#/usr/local/cpanel/bin/manage_hooks add script $INSTALL_FILENAME
