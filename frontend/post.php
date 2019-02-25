@@ -5,6 +5,15 @@
     $username = $_SERVER['USER'];
     $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
+    $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
+    file_put_contents( $pcCheckFile, 'pc' );
+
+    $domainStore = '/home/' . $username . '/public_html/domain';
+    $domain = file_get_contents( $domainStore );
+    if( 'pc' == fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
+    {
+        $homeUrl = 'http://' . $domain;
+    }
 
     header( 'Location: ' . $homeUrl . '/widgets/Application_Article_Publisher?pc_auto_auth=' . PC_AUTO_AUTH_TOKEN );
     exit();

@@ -13,8 +13,6 @@
 
     $domainStore = '/home/' . $username . '/public_html/domain';
     $domain = file_get_contents( $domainStore );
-//    var_export( $domain );
-//    exit();
     if( 'pc' == fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
     {
         $homeUrl = 'http://' . $domain;
