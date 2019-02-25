@@ -76,8 +76,19 @@ function add() {
     $buildSiteLink = '/widgets/PageCarton_NewSiteWizard';
 
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
-    $pcCheckFile = '/home/' . $username . '/public_html/pc_check.txt';
+    $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
     file_put_contents( $pcCheckFile, 'pc' );
+
+    chmod( $pcCheckFile, 0644 );
+    chown( $pcCheckFile, $username );
+    chgrp( $pcCheckFile, $username );
+
+    $domainStore = '/home/' . $username . '/public_html/domain';
+    file_put_contents( $domainStore, $input['data']['domain'] );
+
+    chmod( $domainStore, 0644 );
+    chown( $domainStore, $username );
+    chgrp( $domainStore, $username );
 
     if( 'pc' == fetchLink( $input['data']['domain'] . '/' . basename( $pcCheckFile ) ) )
     {
