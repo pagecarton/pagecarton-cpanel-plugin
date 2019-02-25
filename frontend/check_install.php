@@ -19,30 +19,27 @@
     if( ! is_dir( dirname( $autoAuthFile ) ) )
     {
         mkdir( dirname( $autoAuthFile ), 0777, true );
-
-        chmod( '/home/' . $username . '/pagecarton', 0644 );
-        chown( '/home/' . $username . '/pagecarton', $username );
-        chgrp( '/home/' . $username . '/pagecarton', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default/application', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default/application', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default/application', $username );
     
         chmod( '/home/' . $username . '/pagecarton/sites/default/application/auto-auth', 0644 );
         chown( '/home/' . $username . '/pagecarton/sites/default/application/auto-auth', $username );
         chgrp( '/home/' . $username . '/pagecarton/sites/default/application/auto-auth', $username ); 
+    
+        chmod( '/home/' . $username . '/pagecarton/sites/default/application', 0644 );
+        chown( '/home/' . $username . '/pagecarton/sites/default/application', $username );
+        chgrp( '/home/' . $username . '/pagecarton/sites/default/application', $username );
+        
+        chmod( '/home/' . $username . '/pagecarton/sites/default', 0644 );
+        chown( '/home/' . $username . '/pagecarton/sites/default', $username );
+        chgrp( '/home/' . $username . '/pagecarton/sites/default', $username );
+        
+        chmod( '/home/' . $username . '/pagecarton/sites', 0644 );
+        chown( '/home/' . $username . '/pagecarton/sites', $username );
+        chgrp( '/home/' . $username . '/pagecarton/sites', $username );
+
+        chmod( '/home/' . $username . '/pagecarton', 0644 );
+        chown( '/home/' . $username . '/pagecarton', $username );
+        chgrp( '/home/' . $username . '/pagecarton', $username );
+
     }
 
     $authInfo = array(
