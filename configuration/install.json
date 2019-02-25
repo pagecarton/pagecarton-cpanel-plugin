@@ -7,7 +7,7 @@
     },
     {
         "order":"1",
-        "uri":"pagecarton/plugin/index.php",
+        "uri":"pagecarton/frontend/index.php",
         "icon":"pagecarton.png",
         "group_id":"software",
         "type":"link",
@@ -18,7 +18,7 @@
     },
     {
         "order":"1",
-        "uri":"pagecarton/plugin/create.php",
+        "uri":"pagecarton/frontend/create.php",
         "icon":"pagecarton-creator.png",
         "group_id":"pagecarton",
         "type":"link",
@@ -29,7 +29,7 @@
     },
     {
         "order":"2",
-        "uri":"pagecarton/plugin/post.php",
+        "uri":"pagecarton/frontend/post.php",
         "icon":"pagecarton-post.png",
         "group_id":"pagecarton",
         "type":"link",
@@ -42,7 +42,7 @@
         "order":"3",
         "type":"link",
         "group_id":"pagecarton",
-        "uri":"pagecarton/plugin/manage.php",
+        "uri":"pagecarton/frontend/manage.php", 
         "icon":"pagecarton-sites.png",
         "target":"_blank",
         "featuremanager":true,

@@ -69,12 +69,20 @@ function add() {
             $remoteSite = $remoteSite3;
         }
     }
+
     $ip = gethostname();
     $username = $input['data']['user'];
     $homeUrl = 'http://' . $ip . '/~' . $username;
     $buildSiteLink = '/widgets/PageCarton_NewSiteWizard';
-    $installer = '/home/' . $username . '/public_html/pc_installer.php';
 
+    $installer = '/home/' . $username . '/public_html/pc_installer.php';
+    $pcCheckFile = '/home/' . $username . '/public_html/pc_check.txt';
+    file_put_contents( $pcCheckFile, 'pc' );
+
+    if( 'pc' == fetchLink( $input['data']['domain'] . '/' . basename( $pcCheckFile ) ) )
+    {
+        $homeUrl = 'http://' . $input['data']['domain'];
+    }
 
     if( $f = fetchLink( $remoteSite . '/pc_installer.php?do_not_highlight_file=1' ) )
     {

@@ -1,7 +1,7 @@
 <?php
 
 
-    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/check_install.php' );
+    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/frontend/check_install.php' );
 
 
     $username = $_SERVER['USER'];

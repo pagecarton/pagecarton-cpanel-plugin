@@ -17,10 +17,10 @@
         }
     }
     
-    $header = 'From: info@pagecarton.com' . "\r\n";
+/*     $header = 'From: info@pagecarton.com' . "\r\n";
     $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
     mail( 'info@pagecarton.com', 'New PageCarton Installed on cPanel', var_export( $input, true ), $header );
-
+ */
     $username = $_SERVER['USER'];
 
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
