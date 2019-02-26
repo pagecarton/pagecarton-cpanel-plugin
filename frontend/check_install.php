@@ -4,45 +4,65 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL); 
 
+    $username = $_SERVER['USER'];
+    $ip = $_SERVER['SERVER_NAME'];
+    $homeUrl = 'http://' . $ip . '/~' . $username;
+
+    $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
+    file_put_contents( $pcCheckFile, 'pc' );
+
+    chmod( $pcCheckFile, 0644 );
+    chown( $pcCheckFile, $username );
+    chgrp( $pcCheckFile, $username );
+
+    $domainStore = '/home/' . $username . '/public_html/domain';
+    $domain = file_get_contents( $domainStore );
+    if( 'pc' === fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
+    {
+        $homeUrl = 'http://' . $domain;
+    }
+    else
+    {
+        if( 'pc' !== fetchLink( 'http://' . $ip . '/' . basename( $pcCheckFile ) ) )
+        {
+            echo 'ERROR! Domain name ' . $domain . 'is no longer available. Please contact the technical department.';
+            exit();
+        }
+    }
+
     if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
     {
         require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/frontend/pc_installer.php' );
-    //    exit();
+
+        if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
+        {
+            echo 'PageCarton Could not be installed automatically. Please proceed to <a href="' . $homeUrl . '/pc_installer.php">' . $homeUrl . '/pc_installer.php</a> to install manually.';
+            exit();
+        } 
     } 
-        
-    $username = $_SERVER['USER'];
+
 
 
     $autoAuthId = md5( $username . $_SERVER['SERVER_ADDR'] . $_SERVER['SERVER_NAME'] . $_SERVER['REMOTE_PORT'] . $_SERVER['cp_security_token'] . time() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_COOKIE'] );
     $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
 
-    if( ! is_dir( dirname( $autoAuthFile ) ) )
+    //  create dir
+    $dirExplode = explode( '/', dirname( $autoAuthFile ) );
+    $dirNow = null;
+    foreach( $dirExplode as $each )
     {
-        mkdir( dirname( $autoAuthFile ), 0777, true );
-
-        chmod( '/home/' . $username . '/pagecarton', 0644 );
-        chown( '/home/' . $username . '/pagecarton', $username );
-        chgrp( '/home/' . $username . '/pagecarton', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default/application', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default/application', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default/application', $username );
-    
-        chmod( '/home/' . $username . '/pagecarton/sites/default/application/auto-auth', 0644 );
-        chown( '/home/' . $username . '/pagecarton/sites/default/application/auto-auth', $username );
-        chgrp( '/home/' . $username . '/pagecarton/sites/default/application/auto-auth', $username ); 
+        if( ! trim( $each ) )
+        {
+            continue;
+        }
+        $dirNow .= '/' . $each;
+        if( ! is_dir( $dirNow ) )
+        {
+            mkdir( $dirNow, 0644, true );
+            chmod( $dirNow, 0644 );
+            chown( $dirNow, $username );
+            chgrp( $dirNow, $username );
+        }    
     }
 
     $authInfo = array(

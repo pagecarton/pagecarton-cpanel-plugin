@@ -72,69 +72,105 @@ function add() {
 
     $ip = gethostname();
     $username = $input['data']['user'];
+
+
+    //  server check file
+    $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
+    if( ! is_file( $pcCheckFile ) )
+    {
+        file_put_contents( $pcCheckFile, 'pc' );
+
+        chmod( $pcCheckFile, 0644 );
+        chown( $pcCheckFile, $username );
+        chgrp( $pcCheckFile, $username );
+    }
+
+
+    //  store domain for future use
+    $domain = $input['data']['domain'];
+    $domainStore = '/home/' . $username . '/public_html/domain';
+    if( ! is_file( $domainStore ) )
+    {
+        file_put_contents( $domainStore, $input['data']['domain'] );
+
+        chmod( $domainStore, 0644 );
+        chown( $domainStore, $username );
+        chgrp( $domainStore, $username );
+    }
     $homeUrl = 'http://' . $ip . '/~' . $username;
+    if( 'pc' === fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
+    {
+        $homeUrl = 'http://' . $domain;
+    }
+    else
+    {
+        if( 'pc' !== fetchLink( 'http://' . $ip . '/' . basename( $pcCheckFile ) ) )
+        {
+            echo 'ERROR! Domain name ' . $domain . 'is no longer available. Please contact the technical department.';
+            exit();
+        }
+    }
+
+
     $buildSiteLink = '/widgets/PageCarton_NewSiteWizard';
 
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
-    $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
-    file_put_contents( $pcCheckFile, 'pc' );
 
-    chmod( $pcCheckFile, 0644 );
-    chown( $pcCheckFile, $username );
-    chgrp( $pcCheckFile, $username );
-
-    $domainStore = '/home/' . $username . '/public_html/domain';
-    file_put_contents( $domainStore, $input['data']['domain'] );
-
-    chmod( $domainStore, 0644 );
-    chown( $domainStore, $username );
-    chgrp( $domainStore, $username );
-
-    if( 'pc' == fetchLink( $input['data']['domain'] . '/' . basename( $pcCheckFile ) ) )
-    {
-        $homeUrl = 'http://' . $input['data']['domain'];
-    }
 
     if( $f = fetchLink( $remoteSite . '/pc_installer.php?do_not_highlight_file=1' ) )
     {
     //var_export( $f );
     //exit();
-        file_put_contents( dirname( $myInstallerFile ) . '/pc_installer.php', $f );
         file_put_contents( $installer, $f );
         chmod( $installer, 0644 );
         chown( $installer, $username );
         chgrp( $installer, $username );
-        $url = $homeUrl . '/pc_installer.php?stage=download';
-        $response = fetchLink( $url );
+
+        fetchLink( $homeUrl . '/pc_installer.php?stage=download' );
     //    file_put_contents( $myInstallerFile . '-url.txt', var_export( $url, true ) );
     //    file_put_contents( $myInstallerFile . '-response.txt', var_export( $response, true ) );
     //    file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
 
         //  auto create admin account
-        $autoAuthId = md5( $username . time() . $input['data']['contactemail'] . $input['data']['pass'] . $input['data']['pass']  );
-        $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
+        if( is_dir( '/home/' . $username . '/pagecarton/core/' ) )
+        {
+            $autoAuthId = md5( $username . time() . $input['data']['contactemail'] . $input['data']['pass'] . $input['data']['pass']  );
+            $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
 
-        mkdir( dirname( $autoAuthFile ), 0777, true );
-        
-        chmod( dirname( $autoAuthFile ), 0777 );
-        chown( dirname( $autoAuthFile ), $username );
-        chgrp( dirname( $autoAuthFile ), $username );
+            //  create dir
+            $dirExplode = explode( '/', dirname( $autoAuthFile ) );
+            $dirNow = null;
+            foreach( $dirExplode as $each )
+            {
+                if( ! trim( $each ) )
+                {
+                    continue;
+                }
+                $dirNow .= '/' . $each;
+                if( ! is_dir( $dirNow ) )
+                {
+                    mkdir( $dirNow, 0644, true );
+                    chmod( $dirNow, 0644 );
+                    chown( $dirNow, $username );
+                    chgrp( $dirNow, $username );
+                }    
+            }
 
-        $authInfo = array(
-            'username' => $username,
-            'password' => $input['data']['pass'],
-            'email' => @$input['data']['contactemail'] ? : ( $username . '@' . $ip ),
-            'access_level' => 99,
-        );
-        file_put_contents( $autoAuthFile, json_encode( $authInfo ) );
+            $authInfo = array(
+                'username' => $username,
+                'password' => $input['data']['pass'],
+                'email' => @$input['data']['contactemail'] ? : ( $username . '@' . $ip ),
+                'access_level' => 99,
+            );
+            file_put_contents( $autoAuthFile, json_encode( $authInfo ) );
 
-        chmod( $autoAuthFile, 0777 );
-        chown( $autoAuthFile, $username );
-        chgrp( $autoAuthFile, $username );
+            chmod( $autoAuthFile, 0644 );
+            chown( $autoAuthFile, $username );
+            chgrp( $autoAuthFile, $username );
 
-        fetchLink( $homeUrl . '/?pc_auto_signup=1&pc_auto_auth=' . $autoAuthId );
-        //file_put_contents( 'pc_installer.php',  );
+            fetchLink( $homeUrl . '/?pc_auto_signup=1&pc_auto_auth=' . $autoAuthId );
+        } 
         $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
     //    $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
         $emailMessage = 
