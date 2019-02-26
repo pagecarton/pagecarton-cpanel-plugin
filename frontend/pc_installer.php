@@ -21,7 +21,7 @@
     if( $f = fetchLink( $remoteSite . '/pc_installer.php?do_not_highlight_file=1' ) )
     {
         file_put_contents( $installer, $f );
-        chmod( $installer, 0644 );
+        chmod( $installer, 0700 );
         chown( $installer, $username );
         chgrp( $installer, $username );
         fetchLink( $homeUrl . '/pc_installer.php?stage=download' );

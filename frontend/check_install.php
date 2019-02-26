@@ -6,7 +6,7 @@
 
     $username = $_SERVER['USER'];
     $ip = $_SERVER['SERVER_NAME'];
-    $homeUrl = 'http://' . $ip . '/~' . $username;
+    $homeUrl = null;
 
     $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
     file_put_contents( $pcCheckFile, 'pc' );
@@ -16,18 +16,26 @@
     chgrp( $pcCheckFile, $username );
 
     $domainStore = '/home/' . $username . '/public_html/domain';
-    $domain = file_get_contents( $domainStore );
-    if( 'pc' === fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
+    if( is_file( $domainStore ) AND $domain = file_get_contents( $domainStore ) )
     {
-        $homeUrl = 'http://' . $domain;
-    }
-    else
-    {
-        if( 'pc' !== fetchLink( 'http://' . $ip . '/' . basename( $pcCheckFile ) ) )
+        if( 'pc' === fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
         {
-            echo 'ERROR! Domain name ' . $domain . 'is no longer available. Please contact the technical department.';
-            exit();
+            $homeUrl = 'http://' . $domain;
         }
+    }
+ //   var_export( 'http://' . $domain . '/' );  
+//    var_export( fetchLink( 'http://' . $domain . '/' ) );  
+//    var_export( $_SERVER );   
+    if( ! $homeUrl )
+    {
+        if( 'pc' !== fetchLink( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) ) )
+        {
+        //    var_export( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) );   
+        //    var_export( fetchLink( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) ) );   
+            echo 'ERROR! Domain name "' . $domain . '" is not yet accessible on this server. Please contact the technical department.';
+            exit(); 
+        }
+        $homeUrl = 'http://' . $ip . '/~' . $username;
     }
 
     if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
@@ -58,8 +66,8 @@
         $dirNow .= '/' . $each;
         if( ! is_dir( $dirNow ) )
         {
-            mkdir( $dirNow, 0644, true );
-            chmod( $dirNow, 0644 );
+            mkdir( $dirNow, 0700, true );
+            chmod( $dirNow, 0700 );
             chown( $dirNow, $username );
             chgrp( $dirNow, $username );
         }    
@@ -100,14 +108,14 @@
         curl_setopt( $request, CURLOPT_REFERER, @$settings['referer'] ? : $link );
         if( @$settings['destination_file'] )
         {
-        $fp = fopen( $settings['destination_file'], 'w' );
-        curl_setopt( $request, CURLOPT_FILE, $fp );
-        curl_setopt( $request, CURLOPT_BINARYTRANSFER, true );
-        curl_setopt( $request, CURLOPT_HEADER, 0 ); 
+            $fp = fopen( $settings['destination_file'], 'w' );
+            curl_setopt( $request, CURLOPT_FILE, $fp );
+            curl_setopt( $request, CURLOPT_BINARYTRANSFER, true );
+            curl_setopt( $request, CURLOPT_HEADER, 0 ); 
         }
         else  
         {
-        curl_setopt( $request, CURLOPT_RETURNTRANSFER, true );
+            curl_setopt( $request, CURLOPT_RETURNTRANSFER, true );
         }
         //curl_setopt( $request, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $request, CURLOPT_FOLLOWLOCATION, @$settings['follow_redirect'] === false ? false : true ); //By default, we follow redirect
@@ -115,47 +123,45 @@
         curl_setopt( $request, CURLOPT_TIMEOUT, @$settings['time_out'] ? : 10000 );//Max of 1 Secs on a single request
         if( @$settings['post_fields'] )
         {
-        curl_setopt( $request, CURLOPT_POST, true );
-        //var_export( $request );
-        //var_export( $settings['post_fields'] );   
-        curl_setopt( $request, CURLOPT_POSTFIELDS, $settings['post_fields'] );
+            curl_setopt( $request, CURLOPT_POST, true );
+            //var_export( $request );
+            //var_export( $settings['post_fields'] );   
+            curl_setopt( $request, CURLOPT_POSTFIELDS, $settings['post_fields'] );
         }
         if( @$settings['raw_response_header'] )
         {
-        //var_export( $settings );
-        $headerBuff = fopen( '/tmp/headers' . time(), 'w+' );
-        //var_export( $headerBuff );
-        curl_setopt( $request, CURLOPT_WRITEHEADER, $headerBuff );
+            //var_export( $settings );
+            $headerBuff = fopen( '/tmp/headers' . time(), 'w+' );
+            //var_export( $headerBuff );
+            curl_setopt( $request, CURLOPT_WRITEHEADER, $headerBuff );
         }
         if( is_array( @$settings['http_header'] ) )
         {
-        curl_setopt( $request, CURLOPT_HTTPHEADER, $settings['http_header'] );
+            curl_setopt( $request, CURLOPT_HTTPHEADER, $settings['http_header'] );
         }
         $response = curl_exec( $request );
         $responseOptions = curl_getinfo( $request );
+    //    var_export( $responseOptions );
 
         // close cURL resource, and free up system resources
         curl_close( $request );
-        //var_export( htmlentities( $response ) ); 
-
-        //var_export( $responseOptions );
-        //exit( var_export( $responseOptions ) );
-        //var_export( $settings['post_fields'] );
-        //if( ! $response || $responseOptions['http_code'] != 200 ){ return false; }
         if( empty( $settings['return_error_response'] ) )
         {   
-        if( $responseOptions['http_code'] != 200 ){ return false; }
+            if( $responseOptions['http_code'] != 200 )
+            { 
+                return false; 
+            }
         }
         if( @$settings['return_as_array'] == true )
         {   
-        if( @$settings['raw_response_header'] )
-        {
-        //var_export( $headerBuff );
-        rewind($headerBuff);
-        $headers = stream_get_contents( $headerBuff );
-        @$responseOptions['raw_response_header'] = $headers;
-        }
-        $response = array( 'response' => $response, 'options' => $responseOptions );
+            if( @$settings['raw_response_header'] )
+            {
+                //var_export( $headerBuff );
+                rewind($headerBuff);
+                $headers = stream_get_contents( $headerBuff );
+                @$responseOptions['raw_response_header'] = $headers;
+            }
+            $response = array( 'response' => $response, 'options' => $responseOptions );
         }
         //var_export( $response );
         return $response;

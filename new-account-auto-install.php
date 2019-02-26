@@ -150,8 +150,8 @@ function add() {
                 $dirNow .= '/' . $each;
                 if( ! is_dir( $dirNow ) )
                 {
-                    mkdir( $dirNow, 0644, true );
-                    chmod( $dirNow, 0644 );
+                    mkdir( $dirNow, 0700, true );
+                    chmod( $dirNow, 0700 );
                     chown( $dirNow, $username );
                     chgrp( $dirNow, $username );
                 }    
