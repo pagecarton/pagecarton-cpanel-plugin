@@ -29,7 +29,10 @@
 
         //  rename default index 
         $index = dirname( $installer ) . '/index.html'; 
-        rename( $index, $index . '.backup' );
+        if( is_file( $index ) )
+        {
+            rename( $index, $index . '.backup' );
+        }
     }
 
 ?>

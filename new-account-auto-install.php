@@ -139,8 +139,11 @@ function add() {
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
 
         //  rename default index 
-        $index = dirnam( $installer ) . '/index.html';
-        rename( $index, $index . '.backup' );
+        $index = dirname( $installer ) . '/index.html'; 
+        if( is_file( $index ) )
+        {
+            rename( $index, $index . '.backup' );
+        }
 
         //  auto create admin account
         if( is_dir( '/home/' . $username . '/pagecarton/core/' ) )
