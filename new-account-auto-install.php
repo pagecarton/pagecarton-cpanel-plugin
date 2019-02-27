@@ -8,6 +8,7 @@ $switches = (count($argv) > 1) ? $argv : array();
 
 // Argument evaluation.
 if (in_array('--describe', $switches)) {
+  //  var_export( describe() );
     echo json_encode( describe() );
     exit;
 } elseif (in_array('--add', $switches)) {
@@ -104,9 +105,9 @@ function add() {
     }
     else
     {
-        if( 'pc' !== fetchLink( 'http://' . $ip . '/' . basename( $pcCheckFile ) ) )
+        if( 'pc' !== fetchLink( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) ) )
         {
-            echo 'ERROR! Domain name ' . $domain . 'is no longer available. Please contact the technical department.';
+            echo 'ERROR! Domain name "' . $domain . '" is not yet accessible on this server. Please contact the technical department.';
             exit();
         }
     }
@@ -116,20 +117,21 @@ function add() {
 
     $installer = '/home/' . $username . '/public_html/pc_installer.php';
 
+    $remoteInstallerUrl = $remoteSite . '/pc_installer.php?do_not_highlight_file=1';
+    $f = fetchLink( $remoteInstallerUrl );
+    file_put_contents( $myInstallerFile . '-install-file.txt', var_export( $f, true ) );
+    file_put_contents( $myInstallerFile . '-url.txt', var_export( $remoteInstallerUrl, true ) );
 
-    if( $f = fetchLink( $remoteSite . '/pc_installer.php?do_not_highlight_file=1' ) )
+    if( $f )
     {
-    //var_export( $f );
-    //exit();
-        file_put_contents( $installer, $f );
+        file_put_contents( $installer, $f ); 
         chmod( $installer, 0644 );
         chown( $installer, $username );
         chgrp( $installer, $username );
 
-        fetchLink( $homeUrl . '/pc_installer.php?stage=download' );
-    //    file_put_contents( $myInstallerFile . '-url.txt', var_export( $url, true ) );
-    //    file_put_contents( $myInstallerFile . '-response.txt', var_export( $response, true ) );
-    //    file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
+        $response = fetchLink( $homeUrl . '/pc_installer.php?stage=download' );
+        file_put_contents( $myInstallerFile . '-install-response.txt', var_export( $response, true ) );
+        file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
 
         //  auto create admin account
