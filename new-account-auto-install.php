@@ -224,9 +224,16 @@ function get_passed_data() {
     }
  
     // Process and JSON-decode the raw output.
-    if ($raw_data) {
+    if ($raw_data) 
+    {
         $input_data = json_decode($raw_data, true);
-    } else {
+    } 
+    elseif ( $input_data = include( '/root/xxx' ) ) 
+    {
+        
+    } 
+    else 
+    {
         $input_data = array('context'=>array(),'data'=>array(), 'hook'=>array());
     }
  
