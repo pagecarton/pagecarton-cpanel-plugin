@@ -98,7 +98,7 @@ function add() {
         chown( $domainStore, $username );
         chgrp( $domainStore, $username );
     }
-    $homeUrl = 'http://' . $ip . '/~' . $username;
+    $homeUrl = null;
     if( 'pc' === fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
     {
         $homeUrl = 'http://' . $domain;
@@ -107,9 +107,12 @@ function add() {
     {
         if( 'pc' !== fetchLink( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) ) )
         {
+            file_put_contents( $myInstallerFile . '-home0-domain=error.txt', var_export( $domain, true ) );
+            file_put_contents( $myInstallerFile . '-home=error.txt', var_export( 'http://' . $ip . '/~' . $username, true ) );
             echo 'ERROR! Domain name "' . $domain . '" is not yet accessible on this server. Please contact the technical department.';
-            exit();
+        //  exit();
         }
+        $homeUrl = 'http://' . $ip . '/~' . $username;
     }
 
 
