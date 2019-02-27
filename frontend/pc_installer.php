@@ -26,6 +26,10 @@
         chgrp( $installer, $username );
         fetchLink( $homeUrl . '/pc_installer.php?stage=download' );
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
+
+        //  rename default index 
+        $index = dirnam( $installer ) . '/index.html';
+        rename( $index, $index . '.backup' );
     }
 
 ?>

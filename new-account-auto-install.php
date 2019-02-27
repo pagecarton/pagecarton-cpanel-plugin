@@ -99,7 +99,7 @@ function add() {
         chgrp( $domainStore, $username );
     }
     $homeUrl = null;
-    if( 'pc' === fetchLink( $domain . '/' . basename( $pcCheckFile ) ) )
+    if( 'pc' === fetchLink( 'http://' . $domain . '/' . basename( $pcCheckFile ) ) )
     {
         $homeUrl = 'http://' . $domain;
     }
@@ -137,6 +137,10 @@ function add() {
         file_put_contents( $myInstallerFile . '-install-response.txt', var_export( $response, true ) );
         file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
+
+        //  rename default index 
+        $index = dirnam( $installer ) . '/index.html';
+        rename( $index, $index . '.backup' );
 
         //  auto create admin account
         if( is_dir( '/home/' . $username . '/pagecarton/core/' ) )
