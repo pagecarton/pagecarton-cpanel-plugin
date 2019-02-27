@@ -28,7 +28,7 @@
         fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
 
         //  rename default index 
-        $index = dirnam( $installer ) . '/index.html';
+        $index = dirname( $installer ) . '/index.html'; 
         rename( $index, $index . '.backup' );
     }
 
