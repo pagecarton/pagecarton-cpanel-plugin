@@ -62,7 +62,7 @@
 
         $input = get_passed_data(); 
 
-        file_put_contents( $myInstallerFile . '.txt', var_export( $input, true ) );
+        @file_put_contents( $myInstallerFile . '.txt', var_export( $input, true ) );
 
         //use the next sequence to provide installation procedure.
         $content = null;
@@ -133,8 +133,8 @@
 
         $remoteInstallerUrl = $remoteSite . '/pc_installer.php?do_not_highlight_file=1';
         $f = fetchLink( $remoteInstallerUrl );
-        file_put_contents( $myInstallerFile . '-install-file.txt', var_export( $f, true ) );
-        file_put_contents( $myInstallerFile . '-url.txt', var_export( $remoteInstallerUrl, true ) );
+        @file_put_contents( $myInstallerFile . '-install-file.txt', var_export( $f, true ) );
+        @file_put_contents( $myInstallerFile . '-url.txt', var_export( $remoteInstallerUrl, true ) );
 
         if( $f )
         {
@@ -144,8 +144,8 @@
             chgrp( $installer, $username );
 
             $response = fetchLink( $homeUrl . '/pc_installer.php?stage=download' );
-            file_put_contents( $myInstallerFile . '-install-response.txt', var_export( $response, true ) );
-            file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
+            @file_put_contents( $myInstallerFile . '-install-response.txt', var_export( $response, true ) );
+            @file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
             fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
 
             //  rename default index 
@@ -234,8 +234,10 @@
     // Process data from STDIN.
     function get_passed_data() 
     {  
+        global $username;
+
         // Get input from STDIN.
-        $raw_data;
+        $raw_data = null;
         $stdin_fh = fopen( 'php://stdin', 'r' );
         if ( is_resource($stdin_fh) ) 
         {
@@ -262,14 +264,12 @@
             chmod( $autoAuthFile, 0644 );
             chown( $autoAuthFile, $username );
             chgrp( $autoAuthFile, $username );
-
-
         } 
         elseif( ! empty( $username ) AND $raw_data = file_get_contents( '/home/' . $username . '/userinfo' ) ) 
         {
             $input_data = json_decode( $raw_data, true );
         } 
-        elseif( $input_data = include( '/root/xxx' ) ) 
+        elseif( @$input_data = include( '/root/xxx' ) )  
         {
             
         } 

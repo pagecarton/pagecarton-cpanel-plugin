@@ -8,6 +8,26 @@
     $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = null;
 
+    if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
+    {
+        $switches = array( '--add' );
+        require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/new-account-auto-install.php' );
+        install();
+
+        if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
+        {
+            require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/frontend/pc_installer.php' );
+            if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
+            {
+                echo 'PageCarton Could not be installed automatically.'; 
+                exit();
+            } 
+    
+        } 
+
+    }
+
+
     $pcCheckFile = '/home/' . $username . '/public_html/check-server-access.txt';
     file_put_contents( $pcCheckFile, 'pc' );
 
@@ -34,28 +54,14 @@
         //    var_export( fetchLink( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) ) );   
             echo 'ERROR! Domain name "' . $domain . '" is not yet accessible on this server. Please contact the technical department.';
             exit(); 
+            $homeUrl = 'http://' . $ip . '/~' . $username;
         }
-        $homeUrl = 'http://' . $ip . '/~' . $username;
-    }
-
-    if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
-    {
-        $switches = array( '--add' );
-        require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/new-account-auto-install.php' );
-        install();
-
-        if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
+        else
         {
-            require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/frontend/pc_installer.php' );
-            if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
-            {
-                echo 'PageCarton Could not be installed automatically. Please proceed to <a href="' . $homeUrl . '/pc_installer.php">' . $homeUrl . '/pc_installer.php</a> to install manually.';
-                exit();
-            } 
-    
-        } 
-
+            $homeUrl = 'http://' . $ip . '/~' . $username;
+        }
     }
+
 
     $autoAuthId = md5( $username . $_SERVER['SERVER_ADDR'] . $_SERVER['SERVER_NAME'] . $_SERVER['REMOTE_PORT'] . $_SERVER['cp_security_token'] . time() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_COOKIE'] );
     $autoAuthFile = '/home/' . $username . '/pagecarton/sites/default/application/auto-auth/' . $autoAuthId;
