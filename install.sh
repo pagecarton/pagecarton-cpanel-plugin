@@ -40,10 +40,11 @@ $INSTALL_FILENAME
 
 #   do cron
 #   some servers remove hook so we install 
-SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/cron.sh"
+CRON_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/cron.sh"
+INSTALLER_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/install.sh"
 
-CRON_JOB="*/30 * * * * $SCRIPT_PATH"
-cat <(fgrep -i -v "$SCRIPT_PATH" <(crontab -l)) <(echo "$CRON_JOB") | crontab -
+chmod 755 $CRON_SCRIPT_PATH
+chmod 755 $INSTALLER_SCRIPT_PATH
 
-# Here you execute your script
-"$SCRIPT_PATH"
+CRON_JOB="*/30 * * * * $CRON_SCRIPT_PATH"
+cat <(fgrep -i -v "$CRON_SCRIPT_PATH" <(crontab -l)) <(echo "$CRON_JOB") | crontab -
