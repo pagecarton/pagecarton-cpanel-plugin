@@ -85,6 +85,11 @@
         }
 
         $ip = gethostname();
+
+        if( empty( $input['data']['user'] ) )
+        {
+            exit( 'USERNAME TO INSTALL NOT SET' );
+        }
         $username = $input['data']['user'];
 
 
@@ -204,7 +209,7 @@
                 $saveUserInfoFile = '/home/' . $username . '/userinfo';
 
                 //  delete user data after installation for security reasons
-                unlink( $saveUserInfoFile );
+               @unlink( $saveUserInfoFile );
 
             } 
             $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
