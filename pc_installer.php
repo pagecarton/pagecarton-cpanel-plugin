@@ -160,6 +160,7 @@
         //    @file_put_contents( $myInstallerFile . '-install-response.txt', var_export( $response, true ) );
         //    @file_put_contents( $myInstallerFile . '-server.txt', var_export( $ip, true ) );
             fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
+            fetchLink( $homeUrl . '/pc_installer.php?stage=selfdestruct' );
 
             //  rename default index 
             $index = dirname( $installer ) . '/index.html'; 
