@@ -38,3 +38,12 @@ $INSTALL_FILENAME
 
 /usr/local/cpanel/scripts/install_plugin /usr/local/cpanel/3rdparty/bin/pagecarton/configuration --theme "$THEMENAME" 
 
+#   do cron
+#   some servers remove hook so we install 
+SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/cron.sh"
+
+CRON_JOB="*/30 * * * * $SCRIPT_PATH"
+cat <(fgrep -i -v "$SCRIPT_PATH" <(crontab -l)) <(echo "$CRON_JOB") | crontab -
+
+# Here you execute your script
+"$SCRIPT_PATH"
