@@ -1,7 +1,7 @@
 <?php
-    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/functions.php' );
+    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/functions.php' );
 
-    $myInstallerFile = '/usr/local/cpanel/3rdparty/bin/pagecarton/new-account-auto-install.php';
+    $myInstallerFile = '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/new-account-auto-install.php';
 
     if( empty( $username ) )
     {
@@ -162,13 +162,6 @@
             fetchLink( $homeUrl . '/pc_installer.php?stage=install' );
             fetchLink( $homeUrl . '/pc_installer.php?stage=selfdestruct' );
 
-            //  rename default index 
-            $index = dirname( $installer ) . '/index.html'; 
-            if( is_file( $index ) )
-            {
-                rename( $index, $index . '.backup' );
-            }
-
             //  auto create admin account
             if( is_dir( '/home/' . $username . '/pagecarton/core/' ) )
             {
@@ -214,26 +207,32 @@
 
             } 
             $header = "From: {$input['data']['user']}@{$ip}" . "\r\n";
-        //    $header .= "Return-Path: " . @$mailInfo['return-path'] ? : $mailInfo['from'] . "\r\n";
-            $emailMessage = 
-'Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
 
-Start building your site now: ' . $homeUrl .  $buildSiteLink . '
-
-Your domain name is https://' . $input['data']['domain'] . '. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://' . $input['data']['domain'] .  $buildSiteLink . '
-
-Your login: ' . $input['data']['contactemail'] . '
-Password: ' . $input['data']['pass'] . '
-
-Learn about what you can do with PageCarton
-Documentation: https://docs.pagecarton.org
-Support Forum: https://www.pagecarton.org/forum
-
-Start building your site now: ' . $homeUrl .  $buildSiteLink . '
-
-Regards,
-PageCarton.org Team
-';
+            //  email message
+            $emailMessage = 'Your new website is installed successfully.';
+            if( $x = @file_get_contents( '/usr/local/cpanel/3rdparty/bin/pagecarton/settings/mail_notification' ) )
+            {
+                $emailMessage = $x;
+            }
+            elseif( $x = @file_get_contents( '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/mail_notification' ) )
+            {
+                $emailMessage = $x;
+            }
+            $search = array( 
+                '{{{domain}}}',
+                '{{{email}}}',
+                '{{{password}}}',
+                '{{{home_page_url}}}',
+                '{{{new_site_wizard_url}}}',
+                );
+            $replace = array( 
+                $input['data']['domain'],
+                $input['data']['contactemail'],
+                $input['data']['pass'],
+                $homeUrl,
+                $buildSiteLink,
+            );
+            $emailMessage = str_ireplace( $search, $replace, $emailMessage );
             mail( $input['data']['contactemail'], 'Your new PageCarton Website', $emailMessage, $header );
         }
 

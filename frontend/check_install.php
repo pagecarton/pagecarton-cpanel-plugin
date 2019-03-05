@@ -4,7 +4,7 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL); 
 
-    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/functions.php' );
+    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/functions.php' );
     $username = $_SERVER['USER'];
     $ip = $_SERVER['SERVER_NAME'];
     $homeUrl = null;
@@ -12,12 +12,12 @@
     if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
     {
         $switches = array( '--add' );
-        require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/pc_installer.php' );
+        require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/pc_installer.php' );
         install();
 
         if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
         {
-        //    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/frontend/pc_installer.php' );
+        //    require_once( '/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/frontend/pc_installer.php' );
             if( ! is_dir( $_SERVER['HOME'] . '/pagecarton/core/' ) )
             {
                 echo 'PageCarton Could not be installed automatically.'; 
@@ -98,5 +98,14 @@
     chown( $autoAuthFile, $username );
     chgrp( $autoAuthFile, $username );
     defined( 'PC_AUTO_AUTH_TOKEN' ) || define( 'PC_AUTO_AUTH_TOKEN', $autoAuthId );
+
+    
+    //  rename default index 
+    $index = '/home/' . $username . '/public_html' . '/index.html'; 
+    if( is_file( $index ) )
+    {
+        rename( $index, $index . '.backup' );
+    }
+
 
 ?>

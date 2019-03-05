@@ -6,7 +6,7 @@ THEMENAME="$1"
 fi
 
 FRONTEND_BASE="/usr/local/cpanel/base/frontend/$THEMENAME/pagecarton"
-PAGECARTON_BASE="/usr/local/cpanel/3rdparty/bin/pagecarton"
+PAGECARTON_BASE="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin"
 PLUGIN_BASE="$PAGECARTON_BASE/frontend"
 
 #   remove previous
@@ -34,15 +34,15 @@ chmod 755 $INSTALL_FILENAME
 $INSTALL_FILENAME
 
 #   uninstall
-/usr/local/cpanel/scripts/uninstall_plugin /usr/local/cpanel/3rdparty/bin/pagecarton/configuration --theme="$THEMENAME"
+/usr/local/cpanel/scripts/uninstall_plugin /usr/local/cpanel/3rdparty/bin/pagecarton/plugin/configuration --theme="$THEMENAME"
 
 #   install
-/usr/local/cpanel/scripts/install_plugin /usr/local/cpanel/3rdparty/bin/pagecarton/configuration --theme "$THEMENAME" 
+/usr/local/cpanel/scripts/install_plugin /usr/local/cpanel/3rdparty/bin/pagecarton/plugin/configuration --theme "$THEMENAME" 
 
 #   make required files executable
-CRON_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/cron.sh"
-UPDATE_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/update.sh"
-INSTALLER_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/install.sh"
+CRON_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/cron.sh"
+UPDATE_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/update.sh"
+INSTALLER_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/install.sh"
 
 chmod 755 $CRON_SCRIPT_PATH
 chmod 755 $UPDATE_SCRIPT_PATH

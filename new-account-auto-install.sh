@@ -1,5 +1,5 @@
 #!/bin/bash
-APP_DIR=/usr/local/cpanel/3rdparty/bin/pagecarton/
+APP_DIR=/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/
 mkdir -p $APP_DIR
 INSTALL_FILENAME=${APP_DIR}new-account-auto-install.php
 
