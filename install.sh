@@ -43,10 +43,12 @@ $INSTALL_FILENAME
 CRON_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/cron.sh"
 UPDATE_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/update.sh"
 INSTALLER_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/install.sh"
+UNINSTALLER_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/uninstall.sh"
 
 chmod 755 $CRON_SCRIPT_PATH
 chmod 755 $UPDATE_SCRIPT_PATH
 chmod 755 $INSTALLER_SCRIPT_PATH
+chmod 755 $UNINSTALLER_SCRIPT_PATH
 
 #   do cron
 #   some servers remove hook so we install 
