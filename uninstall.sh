@@ -9,10 +9,6 @@ FRONTEND_BASE="/usr/local/cpanel/base/frontend/$THEMENAME/pagecarton"
 PAGECARTON_BASE="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin"
 PLUGIN_BASE="$PAGECARTON_BASE/frontend"
 
-#   remove previous
-rm -rf pagecarton-cpanel-plugin
-rm -rf "$FRONTEND_BASE"
-rm -rf "$PAGECARTON_BASE"
 
 #   hook for new accounts auto-install
 # older files plugin
@@ -23,3 +19,9 @@ rm -rf "$PAGECARTON_BASE"
 
 #   uninstall real interphace plugin
 /usr/local/cpanel/scripts/uninstall_plugin /usr/local/cpanel/3rdparty/bin/pagecarton/plugin/configuration --theme="$THEMENAME"
+
+#   remove previous
+#   remove last step so that hooks can be removed successfully
+rm -rf pagecarton-cpanel-plugin
+rm -rf "$FRONTEND_BASE"
+rm -rf "$PAGECARTON_BASE"
