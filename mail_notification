@@ -1,13 +1,13 @@
-Your new PageCarton Website is ready. You can now begin to build something awesome with it easily.
+Your new PageCarton site is ready. You can now begin to build something awesome with it easily. You can use this to build a web site or an app.
 
-Start building your site now: {{{home_page_url}}}{{{new_site_wizard_url}}}
+Start building your site now here: {{{home_page_url}}}{{{new_site_wizard_url}}}
 
-Your domain name is {{{domain}}}. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site by going to https://{{{domain}}}{{{new_site_wizard_url}}}
+Your domain name is {{{domain}}}. It may take a while for your domain name to propagate and begin to work, so we have created a temporary link to access your website. Once your domain becomes active, you can build your site in easy steps by going to https://{{{domain}}}{{{new_site_wizard_url}}}
 
 Your login: {{{email}}}
 Password: {{{password}}}
 
-Learn about what you can do with PageCarton
+If you need further help or to learn about what you can do with PageCarton
 Documentation: https://docs.pagecarton.org
 Support Forum: https://www.pagecarton.org/forum
 
