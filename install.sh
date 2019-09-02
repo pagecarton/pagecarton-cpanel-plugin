@@ -52,5 +52,5 @@ chmod 755 $UNINSTALLER_SCRIPT_PATH
 
 #   do cron
 #   some servers remove hook so we install 
-CRON_JOB="*/30 * * * * $CRON_SCRIPT_PATH"
+CRON_JOB="*/30 * * * * $CRON_SCRIPT_PATH > /dev/null 2>&1"
 cat <(fgrep -i -v "$CRON_SCRIPT_PATH" <(crontab -l)) <(echo "$CRON_JOB") | crontab -

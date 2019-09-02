@@ -25,3 +25,8 @@ PLUGIN_BASE="$PAGECARTON_BASE/frontend"
 rm -rf pagecarton-cpanel-plugin
 rm -rf "$FRONTEND_BASE"
 rm -rf "$PAGECARTON_BASE"
+
+
+#   remove cron
+CRON_SCRIPT_PATH="/usr/local/cpanel/3rdparty/bin/pagecarton/plugin/cron.sh"
+cat <(fgrep -i -v "$CRON_SCRIPT_PATH" <(crontab -l)) | crontab -
