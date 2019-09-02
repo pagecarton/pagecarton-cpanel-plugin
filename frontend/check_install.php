@@ -47,7 +47,7 @@
  //   var_export( 'http://' . $domain . '/' );  
 //    var_export( fetchLink( 'http://' . $domain . '/' ) );  
 //    var_export( $_SERVER );   
-    if( ! $homeUrl )
+    if( empty( $homeUrl ) )
     {
         if( 'pc' !== fetchLink( 'http://' . $ip . '/~' . $username . '/' . basename( $pcCheckFile ) ) )
         {
